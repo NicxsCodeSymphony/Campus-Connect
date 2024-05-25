@@ -1,0 +1,94 @@
+:root{
+    --primary-font: 'Poppins';
+    --bgColor: #1A1E21;
+    --secColor: #24BFC7;
+    --darked: #202120;
+    --textColor: #fff;
+}
+
+
+.profile-screen img{
+    width: 100%;
+    max-height: 30vh;
+}
+
+.userAvatar{
+    height: 50px;
+    position: relative;
+    padding: 0 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.userAvatar img{
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    position: absolute;
+    top: -75px;
+    border: 5px solid var(--secColor)
+}
+
+.navs{
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    right: 7%;
+    width: 50%;
+    cursor: pointer;
+}
+
+.navs i{
+    font-size: 20px;
+    background-color:#343738;
+    padding: 10px 12px;
+    border-radius: 50%;
+    font-size: 14px;
+}
+
+.navs i:hover{
+    color: #fff;
+    transition: 0.6s;
+    cursor: pointer;
+    background-color: var(--secColor);
+}
+
+.description{
+    padding: 10px 30px;
+}
+
+.description p{
+    font-size: 12px;
+    padding: 5px 0;
+    opacity: 0.6;
+}
+
+.counts{
+    display: flex;
+    width: 50%;
+    justify-content: space-between;
+}
+
+.counts p span{
+    font-size: 15px;
+    opacity: 1;
+}
+
+.threeNav{
+    display: flex;
+    justify-content: space-between;
+    border: 1px #c0c0c0 solid;
+    height: 30px;
+    margin: 10px 30px;
+    border-radius: 10px;
+    align-items: center;
+    font-size: 12px;
+}
+
+.threeNav p{
+    width: 100%;
+    cursor: pointer;
+    text-align: center;
+}

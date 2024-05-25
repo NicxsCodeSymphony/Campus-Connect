@@ -1,0 +1,57 @@
+:root{
+    --primary-font: 'Poppins';
+    --bgColor: #1A1E21;
+    --secColor: #24BFC7;
+    --darked: #202120;
+    --textColor: #fff;
+}
+
+.notification-screen{
+    padding: 0 20px;
+}
+
+.notifs-container{
+    overflow: auto;
+    height: 80vh;
+}
+
+.notifs{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: #c0c0c03d solid 1px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.notifs .left{
+    display: flex;
+    align-items: center;
+}
+
+.notifs img{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+
+
+.text p{
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+.text p:last-child{
+    font-size: 10px;
+    opacity: 0.6;
+}
+
+.see{
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+
+.notifs-container::-webkit-scrollbar {
+    display: none; 
+}

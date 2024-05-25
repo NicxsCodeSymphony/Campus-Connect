@@ -1,0 +1,146 @@
+:root{
+    --primary-font: 'Poppins';
+    --bgColor: #1A1E21;
+    --secColor: #24BFC7;
+    --darked: #24BFC7;
+    --textColor: #fff;
+}
+
+.feeds-screen{
+    padding: 0 20px;
+}
+
+.heading{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 10vh;
+}
+
+.heading h1{
+    font-size: 15px;
+}
+
+.friendList{
+    display: flex;
+    height: 100px;
+    gap: 20px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+.friend-avatar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.friend-avatar img{
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    border: 2px var(--secColor) solid;
+}
+
+.friend-avatar p{
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.post-container{
+    height: 60vh;
+    overflow: auto;
+}
+
+.post-content{
+    margin-bottom: 172px;
+    width: 100%;
+    /* overflow: auto; */
+    max-height: 70%;
+
+}
+
+.post-heading{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.poster{
+    display: flex;
+    align-items: center;
+}
+
+.poster-info{
+    margin-left: 10px;
+}
+
+.poster-info p{
+    font-size: 14px;
+}
+
+.poster-info p:last-child{
+    font-size: 10px;
+    opacity: 0.6;
+}
+
+.poster img{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+
+.img{
+    height: 40vh;
+    width: 100%;
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+}
+
+.img img{
+    max-height: 100%;
+    width: 100%;
+}
+
+
+.interaction{
+    margin-top: 20px;
+    width: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 20px;
+    padding: 0 10px;
+}
+
+.caption, .time{
+    margin-top: 20px;
+    font-size: 14px;
+    padding: 0 10px;
+}
+
+.time{
+    opacity: 0.6;
+    font-size: 12px;
+
+}
+
+
+.friendList::-webkit-scrollbar {
+    display: none; 
+}
+
+.img::-webkit-scrollbar {
+    display: none; 
+}
+
+.post-container::-webkit-scrollbar {
+    display: none; 
+}
+
+i{
+    cursor: pointer;
+}

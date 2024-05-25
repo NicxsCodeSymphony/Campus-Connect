@@ -1,0 +1,29 @@
+:root{
+    --primary-font: 'Poppins';
+    --bgColor: #1A1E21;
+    --secColor: #24BFC7;
+    --darked: #24BFC7;
+    --textColor: #fff;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Poppins';
+    background: var(--bgColor);
+}
+
+.screen{
+    /* margin: 0 auto; */
+    color: var(--textColor);
+    border: 1px #fff solid;
+    border-radius: 20px;
+    height: 95vh;
+    width: 22% ;
+    margin-top: 25px;
+    position: relative;
+}

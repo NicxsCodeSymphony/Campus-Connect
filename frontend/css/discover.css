@@ -1,0 +1,72 @@
+:root{
+    --primary-font: 'Poppins';
+    --bgColor: #1A1E21;
+    --secColor: #24BFC7;
+    --darked: #202120;
+    --textColor: #fff;
+}
+
+
+.discover-screen{
+    padding: 0 20px;
+}
+
+.input-container{
+    margin-top: 50px;
+    width: 100%;
+    position: relative;
+}
+
+.input-container input{
+    background-color: var(--darked);
+    padding: 12px 40px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+}
+
+.search{
+    position: absolute;
+    top: 49%;
+    left: 20px;
+    transform: translate(-50%, -50%);
+}
+
+.friend-container{
+    margin-top: 40px;
+}
+
+.friend-list{
+    height: 20vh;
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    overflow-y: auto;
+}
+
+.friend-container-list{
+    position: relative;
+}
+
+.friend-list img{
+    height: 80px;
+    width: 80px;
+    border-radius: 20%;
+}
+
+.friend-list img:hover{
+    transform: scale(1.1);
+    transition: 0.6s;
+    cursor: pointer;
+}
+
+.friend-name{
+    position: absolute;
+    top: 5px;
+    left:5px;
+}
+
+.friend-list::-webkit-scrollbar {
+    display: none; 
+}

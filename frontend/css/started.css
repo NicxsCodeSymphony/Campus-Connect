@@ -1,0 +1,79 @@
+:root{
+    --primary-font: 'Poppins';
+    --bgColor: #1A1E21;
+    --secColor: #24BFC7;
+    --darked: #202120;
+    --textColor: #fff;
+}
+
+.heading{
+    height: 32%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.heading img{
+    height: 120px;
+    width: 120px;
+}
+
+.login-container{
+    padding: 0 20px;
+}
+
+.login-container p{
+    font-size: 14px;
+    opacity: 0.6;
+    margin-top: 10px;
+}
+
+.input-container{
+    margin-top: 20px;
+}
+
+input{
+    width: 100%;
+    padding: 15px 10px;
+    margin-bottom: 10px;
+    background-color: var(--darked);
+    border: none;
+    border-radius: 6px;
+}
+
+.forgot{
+    text-align: center;
+    font-size: 10px;
+    font-weight: lighter;
+}
+
+button{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: var(--secColor);
+    border: none;
+    border-radius: 15px;
+    color: var(--textColor);
+    cursor: pointer;
+    margin-top: 50px;
+}
+
+button:hover{
+    background-color: transparent;
+    border: 1px #fff solid;
+    transition: 0.6s;
+}
+
+.signup{
+   position: absolute;
+   bottom: 30px;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   width: 60%;
+}
+
+.signup a{
+    color: var(--secColor);
+    text-decoration: none;
+}
