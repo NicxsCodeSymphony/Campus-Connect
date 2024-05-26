@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <link rel="stylesheet" href="css/root.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/settings.css">
+    <title>Campus Connect</title>
+
+    <style>
+        
+    </style>
+</head>
+<body>
+
+    <div class="screen">
+        <div class="setting-screen">
+            <div class="heading">
+                <i class="fa-solid fa-backward" onclick="navigate('feeds.html')"></i>
+                <p>Edit Post</p>
+                <p>Save</p>
+            </div>
+            <form id="editPost">
+                <input style="display: none;" id="inputImg"/>
+                <div class="post-div">
+                    <input id="user_id" />
+                    <div class="img" id="previewImage">
+                        <input type="file" id="imageInput" onchange="previewImage(event)"/>
+                    </div>
+                    <div style="height: 100%;"><textarea name="caption" id="caption" placeholder="Write caption here..."></textarea></div>
+                </div>
+                <button type="submit">Edit Post</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../backend/js/feeds.js"></script>
+    <script src="../backend/js/navigate.js"></script>
+    <script src="../backend/js/session.js"></script>
+    <script src="../backend/js/post.js"></script>
+
+    <script>
+      $(document).ready(function() {
+    // Function to handle form submission
+    $('#editPost').submit(function(event) {
+        event.preventDefault();
+        var urlParams = new URLSearchParams(window.location.search);
+        var postId = urlParams.get('id');
+        var user_id = $('#user_id').val();
+        var caption = $('#caption').val();
+        var formData = new FormData(this);
+        var fileInput = document.getElementById('imageInput');
+        formData.append('image', fileInput.files[0]);
+        var fileName = $('#inputImg').val()
+        formData.append('fileName', fileName);
+        formData.append('post_id', postId);
+        formData.append('poster_id', user_id);
+        formData.append('caption', caption);
+
+        $.ajax({
+            url: '../backend/php/edit_post.php',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                alert("Successfully updated the post")
+                window.location.href = "feeds.html";
+            },
+            error: function(xhr, status, error) {
+                // Handle the error
+                console.error(error);
+            }
+        });
+    });
+});
+
+    </script>
+    
+</body>
+</html>

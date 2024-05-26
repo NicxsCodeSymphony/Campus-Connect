@@ -5,35 +5,10 @@
     </div>
 </template>
 
-<template id="post-template">
-    <div class="post-content">
-        <div class="post-heading">
-            <div class="poster">
-                <img id="userImage" src="" alt="">
-                <div class="poster-info">
-                    <p id="postUsername"></p>
-                    <p class="post-time"></p>
-                </div>
-            </div>
-            <i id="edModal" style="margin-right: 2px" class="fas fa-ellipsis-v"></i>
-        </div>
-        <div class="img">
-            <img class="post-image" src="" alt="">
-        </div>
-        <p class="caption"></p>
-        <p class="time">10 mins ago</p>
-        <div class="interaction">
-            <i class="fas fa-heart"></i>
-            <i class="fas fa-comment"></i>
-            <i class="fas fa-share"></i>
-        </div>
-    </div>
-</template>
-
 <template id="add-friend-template">
     <div class="friend-container-list">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzQW9oX4IFf5YZmIwfWBRzSm7H4vpVlXdhZuKbhr-zVA&s" alt="">
-    <p class="friend-name">Betty</p>
+        <p class="friend-name">Betty</p>
     </div>
 </template>
 
@@ -50,3 +25,36 @@
     </div>
 </template>
 
+
+<template id="post-template">
+    <div class="post-content">
+        <div class="post-heading">
+            <div class="poster">
+                <img id="userImage" src="" alt="">
+                <div class="poster-info">
+                    <p id="postUsername"></p>
+                    <p class="post-time"></p>
+                </div>
+            </div>
+            <i class="fas fa-ellipsis-v editPost" onclick="openModal(this)" data-post-id=""></i>
+        </div>
+        <div class="img">
+            <img class="post-image" src="" alt="">
+        </div>
+        <p class="caption"></p>
+        <p class="time">10 mins ago</p>
+        <div class="interaction">
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-comment"></i>
+            <i class="fas fa-share"></i>
+        </div>
+        <!-- Modal container -->
+        <div class="edModal">
+            <div class="modal-container">
+              <input class="post_id">
+              <button class="editButton">Edit</button> <br>
+              <button onclick="deletePost(this)" class="delete-btn" data-post-id="">Delete</button>
+            </div>
+        </div>
+    </div>
+</template>
