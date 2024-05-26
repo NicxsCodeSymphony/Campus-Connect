@@ -45,17 +45,27 @@ footer{
     padding-right: 20%;
 }
 
-.addPost{
+
+.addPost {
     background-color: var(--secColor);
     height: 75px;
     width: 75px;
-    border-radius:50%;
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: -30%;
+    left: 40%;
+    overflow: hidden;
+    cursor: pointer;
 }
 
+
+.addPost:hover{
+    transform: rotate(360deg);
+    background-color: transparent;
+    font-size: 2.5em;
+    transition: 1s;
+    border: #c0c0c0 solid 1px;
+}

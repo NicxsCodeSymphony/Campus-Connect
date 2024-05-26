@@ -5,13 +5,25 @@ $(document).ready(function() {
             var friendTemplate = $('#friend-template').html();
             var postTemplate = $('#post-template').html();
 
-            for (var i = 0; i < 3; i++) {
+            for (var i = 0; i < 10; i++) {
                 $('.friendList').append(friendTemplate);
             }
-
-            for (var i = 0; i < 2; i++) {
-                $('.post-container').append(postTemplate);
-            }
+            $.ajax({
+                url: "../backend/php/fetchPost.php",
+                type: "GET",
+                success: function(data){
+                    data.forEach(function(post) {
+                        var $post = $(postTemplate);
+                        $post.find('.caption').text(post.caption);
+                        $post.find('.poster-avatar').attr('src', post.poster_avatar);
+                        $post.find('.post-image').attr('src', "../backend/php/" + post.image);
+                        $('.post-container').append($post);
+                    });
+                },                
+                error: function(xhr, status, error) {
+                    console.error("An error occurred: " + error);
+                }
+            });
         });
     });
 
