@@ -22,12 +22,84 @@ $(document).ready(function(){
             }
         });
     });
+
+    $('#editPost').submit(function(event) {
+        event.preventDefault();
+        var urlParams = new URLSearchParams(window.location.search);
+        var postId = urlParams.get('id');
+        var user_id = $('#user_id').val();
+        var caption = $('#caption').val();
+        var formData = new FormData(this);
+        var fileInput = document.getElementById('imageInput');
+        formData.append('image', fileInput.files[0]);
+        var fileName = $('#inputImg').val()
+        formData.append('fileName', fileName);
+        formData.append('post_id', postId);
+        formData.append('poster_id', user_id);
+        formData.append('caption', caption);
+        formData.append('edit', true)
+
+        $.ajax({
+            url: '../backend/php/edit_post.php',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                console.log(response)
+                window.location.href = "feeds.html";
+            },
+            error: function(xhr, status, error) {
+                // Handle the error
+                console.error(error);
+            }
+        });
+    });
+    
+    // SHOW MODAL
+    $(document).on('click', '.editPost', function(e) {
+        e.preventDefault();
+        var postId = $(this).attr('data-post-id');
+        $(".post_id_input").val(postId);
+        // $(".edModal").css("display", "block");
+        $(".edModal").toggle();
+    });
+    
+    // EDIT POST
+
+    $(document).on('click', '.edit-btn', function(e) {
+        e.preventDefault();
+        let postId = $(".post_id_input").val();
+        window.location.href = `editPost.html?id=${postId}`;
+    });
+
+    // DELETE POST
+    $(document).on('click', '.delete-btn', function(e) {
+        e.preventDefault();
+        let postId = $(".post_id_input").val();
+        if (confirm('Are you sure you want to delete this post?')) {
+            $.ajax({
+                url: "../backend/php/post.php",
+                type: "POST",
+                data: { deletePost: true, post_id: postId },
+                success: function(response) {
+                    var res = JSON.parse(response);
+                    alert(res.message);
+                    if (res.success) {
+                        window.location.reload();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert("An error occurred: " + error);
+                }
+            });
+        }
+    });
+    
+
 });
 
 
-
-
-// Function to extract post ID from URL query parameters
  function getPostIdFromUrl() {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('id');

@@ -36,7 +36,7 @@
                     <p class="post-time"></p>
                 </div>
             </div>
-            <i class="fas fa-ellipsis-v editPost" onclick="openModal(this)" data-post-id=""></i>
+            <i class="fas fa-ellipsis-v editPost" data-post-id=""></i>
         </div>
         <div class="img">
             <img class="post-image" src="" alt="">
@@ -48,13 +48,14 @@
             <i class="fas fa-comment"></i>
             <i class="fas fa-share"></i>
         </div>
-        <!-- Modal container -->
-        <div class="edModal">
-            <div class="modal-container">
-              <input class="post_id">
-              <button class="editButton">Edit</button> <br>
-              <button onclick="deletePost(this)" class="delete-btn" data-post-id="">Delete</button>
-            </div>
+    </div>
+    <div class="edModal">
+        <div class="modal-container">
+          <input class="post_id_input" style="display: none;" />
+          <button class="edit-btn">Edit</button> <br>
+          <button  class="delete-btn">Delete</button>
         </div>
     </div>
 </template>
+
+

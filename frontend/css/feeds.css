@@ -148,9 +148,9 @@ i{
 }
 
 .edModal{
-    position: absolute;
-    top: 26%;
-    right: 10px;
+    position: relative;
+    bottom: 30%;
+    left: 87%;
     display: none;
 }
 
@@ -162,6 +162,8 @@ i{
     align-items: center;
     flex-direction: column;
     padding: 5px 0;
+    position: absolute;
+    top: 50%;
 }
 
 .modal-container button{

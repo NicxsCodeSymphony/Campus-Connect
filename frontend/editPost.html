@@ -38,48 +38,10 @@
         </div>
     </div>
 
-    <script src="../backend/js/feeds.js"></script>
     <script src="../backend/js/navigate.js"></script>
     <script src="../backend/js/session.js"></script>
     <script src="../backend/js/post.js"></script>
 
-    <script>
-      $(document).ready(function() {
-    // Function to handle form submission
-    $('#editPost').submit(function(event) {
-        event.preventDefault();
-        var urlParams = new URLSearchParams(window.location.search);
-        var postId = urlParams.get('id');
-        var user_id = $('#user_id').val();
-        var caption = $('#caption').val();
-        var formData = new FormData(this);
-        var fileInput = document.getElementById('imageInput');
-        formData.append('image', fileInput.files[0]);
-        var fileName = $('#inputImg').val()
-        formData.append('fileName', fileName);
-        formData.append('post_id', postId);
-        formData.append('poster_id', user_id);
-        formData.append('caption', caption);
-
-        $.ajax({
-            url: '../backend/php/edit_post.php',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                alert("Successfully updated the post")
-                window.location.href = "feeds.html";
-            },
-            error: function(xhr, status, error) {
-                // Handle the error
-                console.error(error);
-            }
-        });
-    });
-});
-
-    </script>
     
 </body>
 </html>

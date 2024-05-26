@@ -15,7 +15,7 @@ $(document).ready(function() {
                 success: function(data){
                     data.forEach(function(post) {
                         var $post = $(postTemplate);
-                        // Populate other post data
+                        $post.find('.editPost').attr('data-post-id', post.post_id);
                         $post.find('#postUsername').text("@" + post.username);
                         $post.find('.post-time').text(post.name);
                         $post.find('#userImage').attr('src', "../backend/php/" + post.profile_photo);
@@ -31,29 +31,6 @@ $(document).ready(function() {
             });
             
         });
-
-        $(document).on('click', '.deletePost', function() {
-            var postId = $(this).data('post-id');
-            console.log('Post ID:', postId);
-            if (confirm('Are you sure you want to delete this post?')) {
-                $.ajax({
-                    url: "../backend/php/post.php",
-                    type: "POST",
-                    data: { deletePost: true, post_id: postId },
-                    success: function(response) {
-                        var res = JSON.parse(response);
-                        alert(res.message);
-                        if (res.success) {
-                            window.location.reload();
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        alert("An error occurred: " + error);
-                    }
-                });
-            }
-        });
-        
         
     });
 
