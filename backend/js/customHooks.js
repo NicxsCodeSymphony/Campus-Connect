@@ -13,7 +13,11 @@ $(document).ready(function() {
                 type: "GET",
                 success: function(data){
                     data.forEach(function(post) {
+                        console.log(post)
                         var $post = $(postTemplate);
+                        $post.find('#postUsername').text("@" + post.username);
+                        $post.find('.post-time').text(post.name);
+                        $post.find('#userImage').attr('src', "../backend/php/" + post.profile_photo);
                         $post.find('.caption').text(post.caption);
                         $post.find('.poster-avatar').attr('src', post.poster_avatar);
                         $post.find('.post-image').attr('src', "../backend/php/" + post.image);

@@ -91,7 +91,8 @@ i:hover{
     background-position: center;
     background-repeat: no-repeat;
 }
-input[type="file"] {
+
+#imageInput{
     height: 100%;
     width: 100%;
     position: absolute;
@@ -100,6 +101,7 @@ input[type="file"] {
     opacity: 0;
     cursor: pointer;
 }
+
 #caption {
     background-color: transparent;
     height: 100%;

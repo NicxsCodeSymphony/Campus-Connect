@@ -8,13 +8,11 @@ if(isset($_POST['post'])){
     $image = "";
 
     if(isset($_FILES["imageInput"]) && $_FILES["imageInput"]["error"] == UPLOAD_ERR_OK) {
-        // File upload
-        $target_dir = "assets/";
+        $target_dir = "assets/post/";
         $target_file = $target_dir . basename($_FILES["imageInput"]["name"]);
         $uploadOk = 1;
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-        // Check if image file is a actual image or fake image
         $check = getimagesize($_FILES["imageInput"]["tmp_name"]);
         if($check !== false) {
             $uploadOk = 1;
@@ -23,7 +21,6 @@ if(isset($_POST['post'])){
             $uploadOk = 0;
         }
 
-        // Check file size
         if ($_FILES["imageInput"]["size"] > 1000000) {
             echo json_encode(["success" => false, "message" => "Sorry, your file is too large."]);
             $uploadOk = 0;
@@ -35,7 +32,6 @@ if(isset($_POST['post'])){
             $uploadOk = 0;
         }
 
-        // Check if $uploadOk is set to 0 by an error
         if ($uploadOk == 0) {
             echo json_encode(["success" => false, "message" => "Sorry, your file was not uploaded."]);
         } else {
@@ -47,7 +43,6 @@ if(isset($_POST['post'])){
         }
     }
 
-    // Insert data into database
     $stmt = $conn->prepare("INSERT INTO post (poster_id, caption, image) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $user_id, $caption, $image);
 

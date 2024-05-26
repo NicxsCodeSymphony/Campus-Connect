@@ -27,3 +27,7 @@ body{
     margin-top: 25px;
     position: relative;
 }
+
+input{
+    color: #fff;
+}
