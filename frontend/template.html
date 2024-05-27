@@ -17,13 +17,18 @@
 <template id="notifs-template">
     <div class="notifs">
         <div class="left">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoFYJ1Mgxfx7qK3dNLhB-jAvGbKgqIUHkM83nsS56n3A&s">
+            <img class="friend_image" src="">
             <div class="text">
-                <p>John Nico Edisan</p>
-                <p>commented on your post <span class="time"> * 10hr ago</span></p>
+                <p class="user_name">John Nico Edisan</p>
+                <p class="notif-text"> <span class="time"></span></p>
             </div>
         </div>
-        <div class="see"><p>See</p></div>
+        <div class="actions">
+            <input class="friend_id" type="hidden"/>
+            <p class="see">See</p>
+            <p class="accept">Accept</p>
+            <p class="ignore">Ignore</p>
+        </div>
     </div>
 </template>
 
@@ -53,7 +58,7 @@
     </div>
     <div class="edModal">
         <div class="modal-container">
-          <input class="post_id_input" style="display: none;" />
+          <input class="post_id_input" type="hidden" />
           <button class="edit-btn">Edit</button> <br>
           <button  class="delete-btn">Delete</button>
         </div>

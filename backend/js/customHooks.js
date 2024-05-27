@@ -71,11 +71,66 @@ $(document).ready(function() {
 
 
     $('.notifs-container').load('template.html #notifs-template', function(){
-        var notifs = $('#notifs-template').html();
-        for(var i = 0; i < 20; i++){
-            $('.notifs-container').append(notifs);
-        }
-    })
+        var notification = $('#notifs-template').html();
+        // Make the AJAX request
+        $.ajax({
+            url: '../backend/php/notifs.php',
+            method: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                console.log(response); 
+                if (response.status === 'success') {
+                    response.users.forEach(function(user) {
+                        console.log(user);
+                        var $notifs = $(notification);
+                        $notifs.find('.user_name').text(user.friend_name);
+                        $notifs.find('.friend_image').attr('src', `../backend/php/${user.friend_image}`);
+    
+                        if(user.status === 'request'){
+                            const currentTime = new Date();
+                            const notificationTime = new Date(user.time_created);
+                            const diffMs = currentTime - notificationTime;
+                            const diffSec = Math.floor(diffMs / 1000);
+                            const diffMin = Math.floor(diffSec / 60);
+                            const diffHour = Math.floor(diffMin / 60);
+                            const diffDay = Math.floor(diffHour / 24);
+                            if (diffHour > 0) {
+                                $notifs.find('.notif-text').text('sent you a friend request ' + (diffHour === 1 ? '1 hour ago' : diffHour + ' hours ago'));
+                            } else if (diffMin > 0) {
+                                $notifs.find('.notif-text').text('sent you a friend request ' + (diffMin === 1 ? '1 minute ago' : diffMin + ' minutes ago'));
+                            } else if (diffSec > 0) {
+                                $notifs.find('.notif-text').text('sent you a friend request ' + (diffSec === 1 ? '1 second ago' : diffSec + ' seconds ago'));
+                            } else {
+                                $notifs.find('.notif-text').text('sent you a friend request ' + (diffDay === 1 ? '1 day ago' : diffDay + ' days ago'));
+                            }
+                            $notifs.find('.see').hide();
+                            $notifs.find('.accept').show();
+                            $notifs.find('.ignore').show();
+                        } else {
+                            // $notifs.find('.actions').hide();
+                            $notifs.find('.accept').hide();
+                            $notifs.find('.ignore').hide();
+                        }
+                        
+                        $notifs.find('.friend_id').val(user.friend_id);
+                        $notifs.find('.notif-text').text('You are now friends');
+                        $('.notifs-container').append($notifs);
+                    });
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX request failed:", status, error);
+                alert("An error occurred while making the request.");
+            }
+        });
+    });
+    
+    
+    
+    
+    
 });
 
 
