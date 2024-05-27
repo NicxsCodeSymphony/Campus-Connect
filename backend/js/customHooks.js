@@ -9,6 +9,7 @@ $(document).ready(function() {
             for (var i = 0; i < 10; i++) {
                 $('.friendList').append(friendTemplate);
             }
+
             $.ajax({
                 url: "../backend/php/post.php",
                 type: "GET",
@@ -34,12 +35,41 @@ $(document).ready(function() {
         
     });
 
-    $('.friend-list').load('template.html #add-friend-template', function(){
-       var friends = $('#add-friend-template').html();
-        for(var i = 0; i < 10; i++){
-            $('.friend-list').append(friends);
-        }
-    })
+    let friendTemplate = '';
+    
+    // Load the friend template
+    $('.friend-list').load('template.html #add-friend-template', function() {
+        friendTemplate = $('#add-friend-template').html();
+
+        // Make the AJAX request
+        $.ajax({
+            url: '../backend/php/friend.php',
+            method: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                console.log(response); // Log the response to inspect it
+                if (response.status === 'success') {
+                    response.users.forEach(function(user) {
+                        var $friend = $(friendTemplate);
+                        $friend.find('.friend-name').text(user.username);
+                        $friend.find('.user-id').val(user.id);
+                        $friend.find('.friend-image').attr('src', `../backend/php/${user.profile_photo}`);
+                        $('.friend-list').append($friend);
+                    });
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX request failed:", status, error);
+                alert("An error occurred while making the request.");
+            }
+        });
+        
+        
+    });
+
+
     $('.notifs-container').load('template.html #notifs-template', function(){
         var notifs = $('#notifs-template').html();
         for(var i = 0; i < 20; i++){

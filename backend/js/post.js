@@ -40,7 +40,7 @@ $(document).ready(function(){
         formData.append('edit', true)
 
         $.ajax({
-            url: '../backend/php/edit_post.php',
+            url: '../backend/php/post.php',
             type: 'POST',
             data: formData,
             processData: false,
@@ -84,17 +84,20 @@ $(document).ready(function(){
                 data: { deletePost: true, post_id: postId },
                 success: function(response) {
                     var res = JSON.parse(response);
-                    alert(res.message);
                     if (res.success) {
-                        window.location.reload();
+                    } else {
+                        alert(res.message);
                     }
                 },
                 error: function(xhr, status, error) {
                     alert("An error occurred: " + error);
                 }
             });
+            window.location.reload();
         }
+
     });
+    
     
 
 });
