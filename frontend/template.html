@@ -19,7 +19,7 @@
         <div class="left">
             <img class="friend_image" src="">
             <div class="text">
-                <p class="user_name">John Nico Edisan</p>
+                <p class="user_name"></p>
                 <p class="notif-text"> <span class="time"></span></p>
             </div>
         </div>
@@ -28,6 +28,24 @@
             <p class="see">See</p>
             <p class="accept">Accept</p>
             <p class="ignore">Ignore</p>
+        </div>
+    </div>
+</template>
+
+<template id="comment-template">
+    <div class="notifs">
+        <div class="left">
+            <img class="friend_image" src="">
+            <div class="text">
+                <p class="user_name"></p>
+                <p class="comment-text" style="width: 90%; padding-bottom: 50; position: relative;"> <span class="time"></span></p>
+            </div>
+        </div>
+        <div class="actions">
+            <input class="friend_id" type="hidden"/>
+            <p class="see">See</p>
+            <p class="Edit" style="font-size: 14px">Edit</p>
+            <p class="Delete" style="font-size: 14px">Delete</p>
         </div>
     </div>
 </template>
@@ -51,8 +69,9 @@
         <p class="caption"></p>
         <p class="time">10 mins ago</p>
         <div class="interaction">
+            <input class="post-id" type="hidden" />
             <i class="fas fa-heart"></i>
-            <i class="fas fa-comment"></i>
+            <i class="fas fa-comment openComment"></i>
             <i class="fas fa-share"></i>
         </div>
     </div>

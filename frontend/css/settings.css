@@ -109,7 +109,7 @@ i:hover{
     padding: 10px;
     border-radius: 10px;
 }
-button {
+.editProfile-btn {
     position: absolute;
     bottom: 50px;
     width: 90%;
@@ -121,7 +121,7 @@ button {
     cursor: pointer;
 }
 
-button:hover{
+.editProfile-btn:hover{
     background-color: transparent;
     border: 1px #c0c0c0 solid;
     transition: 0.6s;
@@ -129,4 +129,20 @@ button:hover{
 
 #user_id{
     display: none;
+}
+
+
+.addComment-container{
+    position: absolute; bottom: 15%;width: 90%;
+}
+
+.commentInput{
+    width: 100%; padding: 8px;
+    border-radius: 6px;
+    border: none;
+    color: #000;
+}
+
+.comment-btn{
+    position: aboslute; top: 0
 }

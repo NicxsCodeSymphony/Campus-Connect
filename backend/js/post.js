@@ -55,6 +55,13 @@ $(document).ready(function(){
             }
         });
     });
+
+    $(document).on('click', '.openComment', function(e){
+        e.preventDefault();
+        var postId = $(this).closest('.post-content').find('.post-id').val();
+        window.location.href = `comment.html?id=${postId}`
+    });
+    
     
     // SHOW MODAL
     $(document).on('click', '.editPost', function(e) {

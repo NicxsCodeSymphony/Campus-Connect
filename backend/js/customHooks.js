@@ -42,6 +42,7 @@ $(document).ready(function() {
                     data.forEach(function(post) {
                         var $post = $(postTemplate);
                         $post.find('.editPost').attr('data-post-id', post.post_id);
+                        $post.find('.post-id').val(post.post_id);
                         $post.find('#postUsername').text("@" + post.username);
                         $post.find('.post-time').text(post.name);
                         $post.find('#userImage').attr('src', "../backend/php/" + post.profile_photo);
@@ -151,11 +152,7 @@ $(document).ready(function() {
             }
         });
     });
-    
-    
-    
-    
-    
+
 });
 
 
