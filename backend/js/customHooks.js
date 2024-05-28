@@ -6,9 +6,34 @@ $(document).ready(function() {
             var friendTemplate = $('#friend-template').html();
             var postTemplate = $('#post-template').html();
 
-            for (var i = 0; i < 10; i++) {
-                $('.friendList').append(friendTemplate);
-            }
+            // for (var i = 0; i < 10; i++) {
+            //     $('.friendList').append(friendTemplate);
+            // }
+
+            $.ajax({
+                url: '../backend/php/notifs.php',
+                method: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response); 
+                    if (response.status === 'success') {
+                        response.users.forEach(function(user) {
+                            console.log(user);
+                            var $friendList = $(friendTemplate); 
+                            $friendList.find('.friendAvatar').attr('src', "../backend/php/" + user.friend_image);
+                            $friendList.find('.friendUsername').text(user.friend_username);
+                            $('.friendList').append($friendList);
+                        });
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX request failed:", status, error);
+                    alert("An error occurred while making the request.");
+                }
+            });
+            
 
             $.ajax({
                 url: "../backend/php/post.php",
@@ -108,12 +133,12 @@ $(document).ready(function() {
                             $notifs.find('.ignore').show();
                         } else {
                             // $notifs.find('.actions').hide();
+                        $notifs.find('.notif-text').text('You are now friends with @' + user.friend_username);
                             $notifs.find('.accept').hide();
                             $notifs.find('.ignore').hide();
                         }
                         
                         $notifs.find('.friend_id').val(user.friend_id);
-                        $notifs.find('.notif-text').text('You are now friends');
                         $('.notifs-container').append($notifs);
                     });
                 } else {

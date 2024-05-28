@@ -69,14 +69,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $userId = $_SESSION['user_id'];
+
     if (isset($_GET['post_id'])) {
         $postId = $_GET['post_id'];
         $query = "SELECT post.*, accounts.username, accounts.profile_photo, accounts.name
                   FROM post
                   INNER JOIN accounts ON post.poster_id = accounts.id
-                  WHERE post.post_id = $postId";
+                  WHERE post.post_id = ?
+                  AND (
+                      post.poster_id = ?
+                      OR post.poster_id IN (
+                          SELECT friend_id FROM friend WHERE user_id = ? AND status = 'mutual'
+                          UNION
+                          SELECT user_id FROM friend WHERE friend_id = ? AND status = 'mutual'
+                      )
+                  )";
 
-        $res = mysqli_query($conn, $query);
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param('iiii', $postId, $userId, $userId, $userId);
+        $stmt->execute();
+        $res = $stmt->get_result();
 
         $posts = array();
         while ($row = mysqli_fetch_assoc($res)) {
@@ -86,14 +99,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         send_json_response($posts);
     }
 
-    $userId = $_SESSION['user_id'];
     $query = "SELECT post.*, accounts.username, accounts.profile_photo, accounts.name
               FROM post
               INNER JOIN accounts ON post.poster_id = accounts.id
-              WHERE post.poster_id = $userId
+              WHERE post.poster_id = ?
+              OR post.poster_id IN (
+                  SELECT friend_id FROM friend WHERE user_id = ? AND status = 'mutual'
+                  UNION
+                  SELECT user_id FROM friend WHERE friend_id = ? AND status = 'mutual'
+              )
               ORDER BY time_created DESC";
 
-    $res = mysqli_query($conn, $query);
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('iii', $userId, $userId, $userId);
+    $stmt->execute();
+    $res = $stmt->get_result();
 
     $posts = array();
     while ($row = mysqli_fetch_assoc($res)) {

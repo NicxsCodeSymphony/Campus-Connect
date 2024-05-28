@@ -25,7 +25,7 @@ $(document).ready(function() {
             data: { accept: true, friend_id: friend_id },
             success: function(response) {
                 alert("You are now friends with this friend");
-                window.location.reload();
+                // window.location.reload();
             }
         })
     })

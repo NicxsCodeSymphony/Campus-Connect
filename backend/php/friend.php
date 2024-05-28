@@ -30,7 +30,7 @@ $query = "SELECT * FROM accounts WHERE id != ? AND id NOT IN (
         ELSE user_id
     END AS friend_id
     FROM friend
-    WHERE (user_id = ? OR friend_id = ?) AND status = 'request'
+    WHERE (user_id = ? OR friend_id = ?)
 )";
 
 $stmt = $conn->prepare($query);
