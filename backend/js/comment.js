@@ -4,6 +4,7 @@ $(document).ready(function() {
         e.preventDefault();
         var urlParams = new URLSearchParams(window.location.search);
         var id = urlParams.get('id');
+        var comment = $('.commentInput').val()
 
         $.ajax({
             url: '../backend/php/comment.php',
@@ -11,11 +12,12 @@ $(document).ready(function() {
             data: {
                 addComment: true,
                 post_id: id,
-                comment: 'Hoy naunsa naman ni akong gi program? wala namani nag kadimao',
+                comment: comment,
             },
             dataType: 'json',
             success: function(response) {
                 alert("COMMENT ADDED SUCCESSFULLY");
+                window.location.reload();
             },
             error: function(xhr, status, error) {
                 console.error("An error occurred:", error);

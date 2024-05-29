@@ -178,3 +178,17 @@ i{
 .modal-container button:hover{
     color: var(--darked);
 }
+
+@media only screen and (max-width: 1366px){
+    .interaction{
+        width: 35%;
+    }
+
+    .post-container{
+        height: 60vh;
+    }
+
+    .post-content{
+        margin-bottom: 78px;
+    }
+}

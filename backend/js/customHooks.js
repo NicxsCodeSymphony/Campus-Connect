@@ -83,7 +83,7 @@ $(document).ready(function() {
                         $('.friend-list').append($friend);
                     });
                 } else {
-                    alert(response.message);
+                    // alert(response.message);
                 }
             },
             error: function(xhr, status, error) {
