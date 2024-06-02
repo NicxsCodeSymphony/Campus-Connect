@@ -16,20 +16,57 @@ if(isset($_POST['addComment'])){
     $stmt->execute();
     $stmt->close();
     
-    // Send a JSON response
     echo json_encode(array('status' => 'success'));
-    exit(); // Make sure to exit after sending the JSON response
+    exit();
 }
 
-// Get postId from URL parameter
+if(isset($_POST['deleteComment'])){
+    $commentId = $_POST['comment_id'];
+    $query = "DELETE FROM comments WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $commentId);
+    $stmt->execute();
+    $stmt->close();
+
+    echo json_encode(array('status' => 'success'));
+    exit();
+}
+
+if(isset($_POST['getComment'])){
+    $commentId = $_POST['comment_id'];
+    $query = "SELECT comment FROM comments WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $commentId);
+    $stmt->execute();
+    $stmt->bind_result($comment);
+    $stmt->fetch();
+    $stmt->close();
+
+    echo json_encode(array('status' => 'success', 'comment' => $comment));
+    exit();
+}
+
+if(isset($_POST['updateComment'])){
+    $commentId = $_POST['comment_id'];
+    $comment = $_POST['comment'];
+
+    $query = "UPDATE comments SET comment = ? WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ss", $comment, $commentId);
+    $stmt->execute();
+    $stmt->close();
+
+    echo json_encode(array('status' => 'success'));
+    exit();
+}
+
 if(isset($_GET['id'])){
     $postId = $_GET['id'];
 
-    // $query = "SELECT * FROM comments WHERE post_id = ?";
     $query = "SELECT f.*, a.profile_photo as friend_image, a.username
-    FROM comments f
-    JOIN accounts a ON f.user_id = a.id
-    WHERE post_id = ?";
+              FROM comments f
+              JOIN accounts a ON f.user_id = a.id
+              WHERE post_id = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $postId);
     $stmt->execute();
@@ -40,8 +77,8 @@ if(isset($_GET['id'])){
         $comments[] = $row;
     }
 
-    echo json_encode(array('status' => 'success', 'comments' => $comments)); // Send the comments as JSON
+    echo json_encode(array('status' => 'success', 'comments' => $comments));
 } else {
-    echo json_encode(array('status' => 'error', 'message' => 'Post ID not provided')); // Send an error message if postId is not provided in the URL
+    echo json_encode(array('status' => 'error', 'message' => 'Post ID not provided'));
 }
 ?>
