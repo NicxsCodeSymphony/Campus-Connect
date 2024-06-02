@@ -8,6 +8,7 @@ $(document).ready(function() {
         var id = urlParams.get('id');
         var comment = $('.commentInput').val();
 
+
         $.ajax({
             url: '../backend/php/comment.php',
             method: 'POST',

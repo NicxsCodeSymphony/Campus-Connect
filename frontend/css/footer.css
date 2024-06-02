@@ -69,3 +69,20 @@ footer{
     transition: 1s;
     border: #c0c0c0 solid 1px;
 }
+
+
+@media only screen and (max-width: 1366px){
+    .addPost{
+        height: 55px;
+        width: 55px;
+    }
+
+    .nav-element{
+        font-size: 12px;
+    }
+    
+    .right{
+        padding-right:23%;
+    }
+    
+}
