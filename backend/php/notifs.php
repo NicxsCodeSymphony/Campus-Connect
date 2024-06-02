@@ -3,23 +3,6 @@ session_start();
 $id = $_SESSION['user_id'];
 
 include 'connection.php';
-
-// Check for friend requests
-if (isset($_POST['accept'])) {
-    $friendId = $_POST['friend_id'];
-    
-    $query = "UPDATE friend SET status = 'mutual' WHERE user_id = ? AND friend_id = ?";
-    $stmt = $conn->prepare($query);
-    
-    if ($stmt === false) {
-        echo json_encode(['status' => 'error','message' => 'Query preparation failed: '. $conn->error]);
-        exit();
-    }
-    
-    $stmt->bind_param('ii', $id, $friendId);
-    $stmt->execute();
-}
-
 // Fetch mutual friends
 $query = "
     SELECT f.*, a.name AS friend_name, a.profile_photo AS friend_image, a.username as friend_username

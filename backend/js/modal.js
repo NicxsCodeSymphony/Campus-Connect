@@ -12,4 +12,9 @@ $(document).ready(function(){
     $('.modal-container button').on('click', function(){
         $('.modal-container').parent().hide(); // Hide the modal container
     });
+
+    // Make clickable-heart clickable and alert "HELLO"
+    $('.clickable-heart').on('click', function(){
+        alert("HELLO");
+    });
 });

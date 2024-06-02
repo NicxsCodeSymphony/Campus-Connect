@@ -40,8 +40,6 @@ $(document).ready(function() {
                         $comments.find(".comment-text").text(comment.comment);
                         $comments.find('.Edit').attr('data-post-id', comment.id);
                         $comments.find('.Delete').attr('data-post-id', comment.id);
-                        
-                        // Hide edit and delete buttons if comment user ID is not equal to current user ID
                         if (comment.user_id !== currentUserId) {
                             $comments.find('.Edit').hide();
                             $comments.find('.Delete').hide();

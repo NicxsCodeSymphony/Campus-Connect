@@ -61,6 +61,21 @@ $(document).ready(function(){
         var postId = $(this).closest('.post-content').find('.post-id').val();
         window.location.href = `comment.html?id=${postId}`
     });
+
+    $(document).on('click', '.clickable-heart', function(e){
+        e.preventDefault();
+        var postId = $(this).closest('.post-content').find('.post-id').val();
+        
+        $.ajax({
+            url: '../backend/php/comment.php',
+            method: 'POST',
+            data: {likePost: true,postId: postId},
+            success: function(response) {
+                console.log(response)
+                window.location.reload;
+            },
+        })
+    });
     
     
     // SHOW MODAL

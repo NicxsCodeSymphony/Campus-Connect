@@ -12,7 +12,7 @@ if(isset($_POST['addFriend'])){
     
     $stmt = $conn->prepare("INSERT INTO friend (user_id, friend_id, status) VALUES (?, ?, ?)");
     $requestStatus = 'request'; // Use a variable for the status
-    $stmt->bind_param("sss", $id, $friend, $requestStatus);
+    $stmt->bind_param("sss", $friend, $id, $requestStatus);
     
     if ($stmt->execute() === TRUE) {
         echo json_encode(["success" => true, "message" => "Friend request sent successfully"]);
@@ -22,6 +22,29 @@ if(isset($_POST['addFriend'])){
     $stmt->close();
     exit();
 }
+
+
+if (isset($_POST['accept'])) {
+    $friendId = $_POST['friend_id'];
+    
+    $id = $_SESSION['user_id']; // Assuming you store the user's ID in the session
+    
+    $query = "UPDATE friend SET status = 'mutual' WHERE user_id = ? AND friend_id = ?";
+    $stmt = $conn->prepare($query);
+    
+    if ($stmt === false) {
+        echo json_encode(['status' => 'error', 'message' => 'Query preparation failed: ' . $conn->error]);
+        exit();
+    }
+    
+    $stmt->bind_param('ii', $id, $friendId);
+    if ($stmt->execute()) {
+        echo json_encode(['status' => 'success']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Unable to accept friend request']);
+    }
+}
+
 
 // Fetch users to display in the add friend list
 $query = "SELECT * FROM accounts WHERE id != ? AND id NOT IN (
