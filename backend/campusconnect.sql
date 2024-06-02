@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 28, 2024 at 06:09 AM
+-- Generation Time: Jun 02, 2024 at 07:07 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -46,7 +46,8 @@ CREATE TABLE `accounts` (
 INSERT INTO `accounts` (`id`, `name`, `username`, `password`, `time_created`, `gender`, `bio`, `profile_photo`, `cover_photo`) VALUES
 (3, 'John Nico Edisan', 'nicxs', 'nicxs', '2024-05-26 12:15:16', 'Male', 'Full Stack Developer', 'assets/profile/me.jpg', 'assets/cover/pro.jpg'),
 (4, 'Betty Maluya', 'betty', 'betyang', '2024-05-26 12:45:58', 'Male', 'Model | Call Center Agent', 'assets/profile/pro.jpg', 'assets/cover/bet.jpg'),
-(5, 'Izzy Baliguat', 'izzy', 'izzy', '2024-05-27 02:26:43', 'Female', 'Miss Tajao 2021', 'assets/profile/izzy.jpg', 'assets/cover/gwapa.jpg');
+(5, 'Izzy Baliguat', 'izzy', 'izzy', '2024-05-27 02:26:43', 'Female', 'Miss Tajao 2021', 'assets/profile/izzy.jpg', 'assets/cover/gwapa.jpg'),
+(6, 'Avelline Jean Alegada', 'ave', 'ave', '2024-06-02 17:02:17', 'Female', 'Sample lang ni', 'assets/profile/Screenshot 2024-06-01 092825.png', 'assets/cover/Screenshot 2024-05-24 205839.png');
 
 -- --------------------------------------------------------
 
@@ -67,8 +68,9 @@ CREATE TABLE `comments` (
 --
 
 INSERT INTO `comments` (`id`, `user_id`, `post_id`, `comment`, `time_created`) VALUES
-(1, 4, 31, 'Hoy naunsa naman ni akong gi program? wala namani nag kadimao', '2024-05-28 03:36:29'),
-(2, 3, 43, 'Hoy naunsa naman ni akong gi program? wala namani nag kadimao', '2024-05-28 03:55:36');
+(1, 4, 45, 'hello', '2024-06-02 16:32:31'),
+(2, 5, 46, 'tudloe ko', '2024-06-02 17:04:11'),
+(3, 6, 46, 'sigeee ugma tudloan tika yes sir', '2024-06-02 17:05:31');
 
 -- --------------------------------------------------------
 
@@ -89,8 +91,56 @@ CREATE TABLE `friend` (
 --
 
 INSERT INTO `friend` (`id`, `user_id`, `friend_id`, `status`, `time_created`) VALUES
-(6, 5, 3, 'mutual', '2024-05-28 00:35:38'),
-(7, 3, 4, 'mutual', '2024-05-28 00:40:29');
+(1, 4, 3, 'mutual', '2024-06-02 16:32:07'),
+(2, 5, 6, 'mutual', '2024-06-02 17:02:54');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `like_couter`
+--
+
+CREATE TABLE `like_couter` (
+  `id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `time` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `like_couter`
+--
+
+INSERT INTO `like_couter` (`id`, `post_id`, `user_id`, `time`) VALUES
+(1, 45, 4, '2024-06-02 16:58:25'),
+(2, 45, 3, '2024-06-02 16:59:55'),
+(3, 46, 5, '2024-06-02 17:04:02');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notification`
+--
+
+CREATE TABLE `notification` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `type` varchar(50) NOT NULL,
+  `time` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `notification`
+--
+
+INSERT INTO `notification` (`id`, `user_id`, `post_id`, `type`, `time`) VALUES
+(1, 4, 45, 'comment', '2024-06-03 00:32:31'),
+(2, 4, 45, 'like', '2024-06-03 00:58:25'),
+(3, 3, 45, 'like', '2024-06-03 00:59:55'),
+(4, 5, 46, 'like', '2024-06-03 01:04:02'),
+(5, 5, 46, 'comment', '2024-06-03 01:04:11'),
+(6, 6, 46, 'comment', '2024-06-03 01:05:31');
 
 -- --------------------------------------------------------
 
@@ -112,8 +162,9 @@ CREATE TABLE `post` (
 
 INSERT INTO `post` (`post_id`, `poster_id`, `caption`, `image`, `time_created`) VALUES
 (31, 4, 'I am betty maluya!', 'assets/post/Screenshot 2024-05-23 223200.png', '2024-05-26 17:53:42'),
-(42, 3, 'asdasd', '', '2024-05-27 02:10:13'),
-(43, 5, 'This is izzying nga gwapa kaau', 'assets/post/izzy.jpg', '2024-05-27 02:28:50');
+(43, 5, 'This is izzying nga gwapa kaau', 'assets/post/izzy.jpg', '2024-05-27 02:28:50'),
+(45, 3, 'Hello world', '', '2024-06-02 14:55:06'),
+(46, 6, 'table rapud ni', 'assets/post/Screenshot 2024-05-30 205011.png', '2024-06-02 17:03:08');
 
 --
 -- Indexes for dumped tables
@@ -138,6 +189,18 @@ ALTER TABLE `friend`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `like_couter`
+--
+ALTER TABLE `like_couter`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `notification`
+--
+ALTER TABLE `notification`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `post`
 --
 ALTER TABLE `post`
@@ -152,25 +215,37 @@ ALTER TABLE `post`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `friend`
 --
 ALTER TABLE `friend`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `like_couter`
+--
+ALTER TABLE `like_couter`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `notification`
+--
+ALTER TABLE `notification`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `post`
 --
 ALTER TABLE `post`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- Constraints for dumped tables
