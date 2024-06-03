@@ -72,7 +72,7 @@ $(document).ready(function() {
                                         } else if (diffMin > 0) {
                                             $notifs.find('.notif-text').text('commented on your post ' + (diffMin === 1 ? '1 minute ago' : diffMin + ' minutes ago'));
                                         } else if (diffSec > 0) {
-                                            $notifs.find('.notif-text').text('commented on your pofst ' + (diffSec === 1 ? '1 second ago' : diffSec + ' seconds ago'));
+                                            $notifs.find('.notif-text').text('commented on your post ' + (diffSec === 1 ? '1 second ago' : diffSec + ' seconds ago'));
                                         } else {
                                             $notifs.find('.notif-text').text('commented on your post ' + (diffDay === 1 ? '1 day ago' : diffDay + ' days ago'));
                                         }
