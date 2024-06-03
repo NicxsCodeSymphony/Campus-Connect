@@ -13,7 +13,7 @@ function send_json_response($data) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['deletePost'])) {
         $postId = $_POST['post_id'];
-        $query = "SELECT image FROM photo WHERE post_id = $postId";
+        $query = "SELECT image FROM post WHERE post_id = $postId";
         $res = mysqli_query($conn, $query);
         $fileDeleted = true;
 
