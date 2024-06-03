@@ -1,21 +1,26 @@
 $(document).ready(function(){
 
-    $("#addPost").on("submit", function(e){
+    images = []
+
+    $("#addPost").on("submit", function(e) {
         e.preventDefault();
         
         var formData = new FormData();
         formData.append('post', true);
         formData.append('poster_id', $("#user_id").val());
         formData.append('caption', $("#caption").val());
-        formData.append('imageInput', $("#imageInput")[0].files[0]);
-        
+     
+        for (let i = 0; i < images.length; i++) {
+            formData.append('imageInput[]', images[i]);
+        }
+
         $.ajax({
             url: "../backend/php/addPost.php",
             method: "POST",
             data: formData,
             contentType: false,
             processData: false,
-            success: function(data){
+            success: function(data) {
                 alert(data);
                 $("#addPost")[0].reset();
                 window.location.href = "feeds.html";
@@ -153,21 +158,38 @@ function loadPostData(postId) {
         }
     });
 }
-
 function previewImage(event) {
     const preview = document.getElementById('previewImage');
-    const file = event.target.files[0];
-    const reader = new FileReader();
+    const files = event.target.files;  
+    selectedFile(files)
 
-    reader.onloadend = function() {
-        preview.style.backgroundImage = `url(${reader.result})`;
+    // Clear previous preview
+    preview.innerHTML = '';
+
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.style.maxWidth = '200px'; 
+            preview.appendChild(img);
+        }
+
+        reader.readAsDataURL(file);
     }
 
-    if (file) {
-        reader.readAsDataURL(file);
-        $('#inputImg').val("assets/post/" + file.name);
+    function selectedFile(files) {
+        // Convert the FileList to an array and append it to the images array
+        images = images.concat(Array.from(files));
+    }
+
+    // If there are files, set the input value to the path of the first file
+    if (files.length > 0) {
+        $('#inputImg').val("assets/post/" + files[0].name);
     } else {
-        preview.style.backgroundImage = null;
+        // If no files selected, clear the input value
         $('#inputImg').val(""); 
     }
 }

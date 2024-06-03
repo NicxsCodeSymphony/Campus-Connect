@@ -13,16 +13,16 @@ function send_json_response($data) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['deletePost'])) {
         $postId = $_POST['post_id'];
-        $query = "SELECT image FROM post WHERE post_id = $postId";
+        $query = "SELECT image FROM photo WHERE post_id = $postId";
         $res = mysqli_query($conn, $query);
-        $fileDeleted = false;
+        $fileDeleted = true;
 
-        if ($res && mysqli_num_rows($res) > 0) {
-            $row = mysqli_fetch_assoc($res);
-            $filePath = $row['image']; 
-
+        while ($row = mysqli_fetch_assoc($res)) {
+            $filePath = $row['image'];
             if (file_exists($filePath)) {
-                $fileDeleted = unlink($filePath);
+                if (!unlink($filePath)) {
+                    $fileDeleted = false;
+                }
             }
         }
 
@@ -30,9 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $res = mysqli_query($conn, $query);
 
         if ($res && $fileDeleted) {
-            send_json_response(["success" => true, "message" => "Post and file were deleted"]);
+            send_json_response(["success" => true, "message" => "Post and files were deleted"]);
         } elseif ($res) {
-            send_json_response(["success" => true, "message" => "Post was deleted, but file was not found or deleted"]);
+            send_json_response(["success" => true, "message" => "Post was deleted, but some files were not found or deleted"]);
         } else {
             send_json_response(["success" => false, "message" => "Post was not deleted"]);
         }
@@ -41,29 +41,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['edit'])) {
         $post_id = $_POST['post_id'];
         $caption = $_POST['caption'];
-        $image_file_name = $_POST['fileName'];
 
-        $target_directory = "assets/post/";
-        $target_file = $target_directory . basename($_FILES["image"]["name"]);
-        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            $query = "UPDATE post SET caption='$caption', image='$image_file_name' WHERE post_id='$post_id'";
-            $res = mysqli_query($conn, $query);
-            if ($res) {
-                if (file_exists($target_directory . $image_file_name)) {
-                    unlink($target_directory . $image_file_name);
-                }
-                send_json_response(["success" => true, "message" => "Post caption was updated"]);
-            } else {
-                send_json_response(["success" => false, "message" => "Post caption was not updated"]);
-            }
+        $query = "UPDATE post SET caption='$caption' WHERE post_id='$post_id'";
+        $res = mysqli_query($conn, $query);
+        if ($res) {
+            send_json_response(["success" => true, "message" => "Post caption was updated"]);
         } else {
-            $query = "UPDATE post SET caption='$caption' WHERE post_id='$post_id'";
-            $res = mysqli_query($conn, $query);
-            if ($res) {
-                send_json_response(["success" => true, "message" => "Post caption was updated"]);
-            } else {
-                send_json_response(["success" => false, "message" => "Post caption was not updated"]);
-            }
+            send_json_response(["success" => false, "message" => "Post caption was not updated"]);
         }
     }
 }
@@ -73,9 +57,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     if (isset($_GET['post_id'])) {
         $postId = $_GET['post_id'];
-        $query = "SELECT post.*, accounts.username, accounts.profile_photo, accounts.name
+        $query = "SELECT post.*, accounts.username, accounts.profile_photo, accounts.name, photos.image
                   FROM post
                   INNER JOIN accounts ON post.poster_id = accounts.id
+                  LEFT JOIN photos ON post.post_id = photos.post_id
                   WHERE post.post_id = ?
                   AND (
                       post.poster_id = ?
@@ -93,15 +78,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         $posts = array();
         while ($row = mysqli_fetch_assoc($res)) {
-            $posts[] = $row;
+            $posts[$row['post_id']]['post_data'] = [
+                'post_id' => $row['post_id'],
+                'poster_id' => $row['poster_id'],
+                'caption' => $row['caption'],
+                'time_created' => $row['time_created'],
+                'username' => $row['username'],
+                'profile_photo' => $row['profile_photo'],
+                'name' => $row['name']
+            ];
+            if (!empty($row['image'])) {
+                $posts[$row['post_id']]['images'][] = $row['image'];
+            }
         }
 
-        send_json_response($posts);
+        send_json_response(array_values($posts));
     }
 
-    $query = "SELECT post.*, accounts.username, accounts.profile_photo, accounts.name
+    $query = "SELECT post.*, accounts.username, accounts.profile_photo, accounts.name, photos.image
               FROM post
               INNER JOIN accounts ON post.poster_id = accounts.id
+              LEFT JOIN photos ON post.post_id = photos.post_id
               WHERE post.poster_id = ?
               OR post.poster_id IN (
                   SELECT friend_id FROM friend WHERE user_id = ? AND status = 'mutual'
@@ -117,9 +114,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $posts = array();
     while ($row = mysqli_fetch_assoc($res)) {
-        $posts[] = $row;
+        $posts[$row['post_id']]['post_data'] = [
+            'post_id' => $row['post_id'],
+            'poster_id' => $row['poster_id'],
+            'caption' => $row['caption'],
+            'time_created' => $row['time_created'],
+            'username' => $row['username'],
+            'profile_photo' => $row['profile_photo'],
+            'name' => $row['name']
+        ];
+        if (!empty($row['image'])) {
+            $posts[$row['post_id']]['images'][] = $row['image'];
+        }
     }
 
-    send_json_response($posts);
+    send_json_response(array_values($posts));
 }
 ?>
+

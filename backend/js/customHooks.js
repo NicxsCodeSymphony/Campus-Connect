@@ -59,30 +59,37 @@ $(document).ready(function() {
                 $.ajax({
                     url: "../backend/php/post.php",
                     type: "GET",
-                    success: function(data){
+                    success: function(data) {
                         data.forEach(function(post) {
-                            var $post = $(postTemplate);
-                            $post.find('.editPost').attr('data-post-id', post.post_id);
-                            $post.find('.post-id').val(post.post_id);
-                            $post.find('#postUsername').text("@" + post.username);
-                            $post.find('.post-time').text(post.name);
-                            $post.find('#userImage').attr('src', "../backend/php/" + post.profile_photo);
-                            $post.find('.caption').text(post.caption);
-                            $post.find('.poster-avatar').attr('src', post.poster_avatar);
-                            $post.find('.post-image').attr('src', "../backend/php/" + post.image);
-
+                            console.log("Post info: ", post);
+                            var $post = $($('#post-template').html()); // Use the template content
+                            $post.find('.editPost').attr('data-post-id', post.post_data.post_id);
+                            $post.find('.post-id').val(post.post_data.post_id);
+                            $post.find('#postUsername').text("@" + post.post_data.username);
+                            $post.find('.post-time').text(post.post_data.name);
+                            $post.find('#userImage').attr('src', "../backend/php/" + post.post_data.profile_photo);
+                            $post.find('.caption').text(post.post_data.caption);
+                            $post.find('.poster-avatar').attr('src', post.post_data.poster_avatar);
+                
+                            var imagesContainer = $post.find('.img');
+                            post.images.forEach(function(image) {
+                                // Create a new image element for each image URL
+                                var $img = $('<img class="post-image" alt="">').attr('src', "../backend/php/" + image);
+                                imagesContainer.append($img); // Append each image to the images container
+                            });
+                
                             // Hide the editPost element if the poster_id is not equal to the current user ID
-                            if (post.poster_id !== currentUserId) {
+                            if (post.post_data.poster_id !== currentUserId) {
                                 $post.find('.editPost').hide();
                             }
-
+                
                             $('.post-container').append($post);
                         });
                     },
                     error: function(xhr, status, error) {
                         console.error("An error occurred: " + error);
                     }
-                });
+                });                
                 
             });
             

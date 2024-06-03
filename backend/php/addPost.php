@@ -2,59 +2,79 @@
 
 include "connection.php";
 
-if(isset($_POST['post'])){
+if (isset($_POST['post'])) {
     $user_id = $_POST['poster_id'];
     $caption = $_POST['caption'];
-    $image = "";
 
-    if(isset($_FILES["imageInput"]) && $_FILES["imageInput"]["error"] == UPLOAD_ERR_OK) {
-        $target_dir = "assets/post/";
-        $target_file = $target_dir . basename($_FILES["imageInput"]["name"]);
-        $uploadOk = 1;
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    // Start transaction
+    $conn->begin_transaction();
 
-        $check = getimagesize($_FILES["imageInput"]["tmp_name"]);
-        if($check !== false) {
-            $uploadOk = 1;
+    try {
+        // Insert post into post table
+        $stmt = $conn->prepare("INSERT INTO post (poster_id, caption) VALUES (?, ?)");
+        $stmt->bind_param("ss", $user_id, $caption);
+
+        if ($stmt->execute() === TRUE) {
+            $post_id = $conn->insert_id; // Get the ID of the inserted post
         } else {
-            echo json_encode(["success" => false, "message" => "File is not an image."]);
-            $uploadOk = 0;
+            throw new Exception("Post was not successful");
         }
+        $stmt->close();
 
-        if ($_FILES["imageInput"]["size"] > 1000000) {
-            echo json_encode(["success" => false, "message" => "Sorry, your file is too large."]);
-            $uploadOk = 0;
-        }
+        // Check if files are uploaded
+        if (isset($_FILES["imageInput"])) {
+            $target_dir = "assets/post/";
+            $files = $_FILES["imageInput"];
+            $file_count = count($files['name']);
+            
+            for ($i = 0; $i < $file_count; $i++) {
+                if ($files["error"][$i] == UPLOAD_ERR_OK) {
+                    $target_file = $target_dir . basename($files["name"][$i]);
+                    $uploadOk = 1;
+                    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-        // Allow certain file formats
-        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
-            echo json_encode(["success" => false, "message" => "Sorry, only JPG, JPEG, PNG & GIF files are allowed."]);
-            $uploadOk = 0;
-        }
+                    $check = getimagesize($files["tmp_name"][$i]);
+                    if ($check === false) {
+                        throw new Exception("File is not an image.");
+                    }
 
-        if ($uploadOk == 0) {
-            echo json_encode(["success" => false, "message" => "Sorry, your file was not uploaded."]);
-        } else {
-            if (move_uploaded_file($_FILES["imageInput"]["tmp_name"], $target_file)) {
-                $image = $target_file;
-            } else {
-                echo json_encode(["success" => false, "message" => "Sorry, there was an error uploading your file."]);
+                    if ($files["size"][$i] > 100000000) {
+                        throw new Exception("Sorry, your file is too large.");
+                    }
+
+                    // Allow certain file formats
+                    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
+                        throw new Exception("Sorry, only JPG, JPEG, PNG & GIF files are allowed.");
+                    }
+
+                    if (move_uploaded_file($files["tmp_name"][$i], $target_file)) {
+                        $image = $target_file;
+
+                        // Insert image into photo table
+                        $stmt = $conn->prepare("INSERT INTO photos (post_id, image) VALUES (?, ?)");
+                        $stmt->bind_param("ss", $post_id, $image);
+
+                        if ($stmt->execute() !== TRUE) {
+                            throw new Exception("Image insertion failed.");
+                        }
+                        $stmt->close();
+                    } else {
+                        throw new Exception("Sorry, there was an error uploading your file.");
+                    }
+                }
             }
         }
-    }
 
-    $stmt = $conn->prepare("INSERT INTO post (poster_id, caption, image) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $user_id, $caption, $image);
-
-    if($stmt->execute() === TRUE){
+        // Commit transaction
+        $conn->commit();
         echo json_encode(["success" => true, "message" => "Post was successful"]);
-    }else{
-        echo json_encode(["success" => false, "message" => "Post was not successful"]);
-    }
 
-    $stmt->close();
+    } catch (Exception $e) {
+        // Rollback transaction
+        $conn->rollback();
+        echo json_encode(["success" => false, "message" => $e->getMessage()]);
+    }
 }
 
 $conn->close();
-
 ?>
