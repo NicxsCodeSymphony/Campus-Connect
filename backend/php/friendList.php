@@ -8,12 +8,12 @@ $query = "
     SELECT f.*, a.name AS friend_name, a.profile_photo AS friend_image, a.username as friend_username
     FROM friend f
     JOIN accounts a ON f.friend_id = a.id
-    WHERE f.user_id = ? 
+    WHERE f.user_id = ? AND f.status = 'mutual'
     UNION
     SELECT f.*, a.name AS friend_name, a.profile_photo AS friend_image, a.username as friend_username
     FROM friend f
     JOIN accounts a ON f.user_id = a.id
-    WHERE f.friend_id = ? 
+    WHERE f.friend_id = ?  AND f.status = 'mutual'
 ";
 
 $stmt = $conn->prepare($query);

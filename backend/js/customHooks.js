@@ -92,6 +92,34 @@ $(document).ready(function() {
                             $post.find('.editPost').hide();
                         }
 
+                        // Apply red color if post is liked
+                        if (post.is_liked) {
+                            $post.find('.clickable-heart').addClass('liked');
+                        }
+
+                        // Attach click event to the heart icon
+                        $post.find('.clickable-heart').on('click', function() {
+                            var $heart = $(this);
+                            var postId = $post.find('.post-id').val();
+
+                            $.ajax({
+                                url: '../backend/php/likePost.php',
+                                method: 'POST',
+                                data: { post_id: postId, user_id: currentUserId, likePost: true },
+                                success: function(response) {
+                                    if (response.status === 'success') {
+                                        $heart.toggleClass('liked');
+                                    } else {
+                                        console.log(response.message);
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error("AJAX request failed:", status, error);
+                                    console.log("An error occurred while updating the like status.");
+                                }
+                            });
+                        });
+
                         $('.post-container').append($post);
                     });
                 },

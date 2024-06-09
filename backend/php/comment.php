@@ -68,41 +68,6 @@ if(isset($_POST['updateComment'])){
     exit();
 }
 
-if(isset($_POST['likePost'])){
-    $postId = $_POST['postId'];
-    
-    // Check if the like already exists
-    $checkQuery = "SELECT * FROM like_couter WHERE user_id = ? AND post_id = ?";
-    $checkStmt = $conn->prepare($checkQuery);
-    $checkStmt->bind_param("ss", $user_id, $postId);
-    $checkStmt->execute();
-    $result = $checkStmt->get_result();
-    
-    if($result->num_rows == 0){
-        // Insert the like if it doesn't exist
-        $insertQuery = "INSERT INTO like_couter (user_id, post_id) VALUES (?,?)";
-        $stmt = $conn->prepare($insertQuery);
-        $stmt->bind_param("ss", $user_id, $postId);
-        $stmt->execute();
-        $stmt->close();
-        
-        // Prepare JSON response
-        $response = array("status" => "success", "message" => "Like saved successfully.");
-        echo json_encode($response);
-    } else {
-        // Prepare JSON response
-        $response = array("status" => "error", "message" => "Like already exists.");
-        echo json_encode($response);
-    }
-
-    $query1 = "INSERT INTO notification (user_id, post_id, type) VALUES (?, ?, 'like')";
-    $stmt1 = $conn->prepare($query1);
-    $stmt1->bind_param("ss", $user_id, $postId); 
-    $stmt1->execute();
-    $stmt1->close();
-    
-    exit();
-}
 
 
 

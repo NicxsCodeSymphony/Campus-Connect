@@ -179,6 +179,14 @@ i{
     color: var(--darked);
 }
 
+.clickable-heart {
+    cursor: pointer;
+}
+
+.liked {
+    color: red;
+}
+
 /* feeds.css */
 
 /* Full-screen image preview modal */

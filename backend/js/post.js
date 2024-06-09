@@ -78,7 +78,7 @@ $(document).ready(function(){
         var postId = $(this).closest('.post-content').find('.post-id').val();
         
         $.ajax({
-            url: '../backend/php/comment.php',
+            url: '../backend/php/likePost.php',
             method: 'POST',
             data: {likePost: true,postId: postId},
             success: function(response) {

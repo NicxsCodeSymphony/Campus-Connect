@@ -201,4 +201,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     send_json_response(array_values($posts));
 }
 ?>
-
