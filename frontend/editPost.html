@@ -10,28 +10,21 @@
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/settings.css">
     <title>Campus Connect</title>
-
-    <style>
-        
-    </style>
 </head>
 <body>
-
     <div class="screen">
         <div class="setting-screen">
             <div class="heading">
                 <i class="fa-solid fa-backward" onclick="navigate('feeds.html')"></i>
                 <p>Edit Post</p>
-                <p>Save</p>
+                <button id="savePost">Save</button> <!-- Changed to button for easier handling -->
             </div>
-            <form id="editPost">
-                <input style="display: none;" id="inputImg"/>
+            <form id="editPost" enctype="multipart/form-data"> <!-- Added enctype for file upload -->
+                <input type="hidden" id="user_id" value="1"> <!-- Example user_id, adjust as needed -->
                 <div class="post-div">
-                    <input id="user_id" />
-                    <div class="img" id="previewImage">
-                        <input type="file" id="imageInput" onchange="previewImage(event)"/>
-                    </div>
-                    <div style="height: 100%;"><textarea name="caption" id="caption" placeholder="Write caption here..."></textarea></div>
+                    <div id="previewImage"></div> <!-- Placeholder for preview, adjust as needed -->
+                    <input type="file" id="imageInputs" onchange="previewImage(event)" multiple accept="image/*"/>
+                    <textarea name="caption" id="caption" placeholder="Write caption here..."></textarea>
                 </div>
                 <button type="submit">Edit Post</button>
             </form>
@@ -41,7 +34,5 @@
     <script src="../backend/js/navigate.js"></script>
     <script src="../backend/js/session.js"></script>
     <script src="../backend/js/post.js"></script>
-
-    
 </body>
 </html>

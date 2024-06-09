@@ -30,19 +30,16 @@ $(document).ready(function(){
 
     $('#editPost').submit(function(event) {
         event.preventDefault();
-        var urlParams = new URLSearchParams(window.location.search);
-        var postId = urlParams.get('id');
-        var user_id = $('#user_id').val();
-        var caption = $('#caption').val();
+
         var formData = new FormData(this);
-        var fileInput = document.getElementById('imageInput');
-        formData.append('image', fileInput.files[0]);
-        var fileName = $('#inputImg').val()
-        formData.append('fileName', fileName);
+        var postId = getPostIdFromURL();
+
         formData.append('post_id', postId);
-        formData.append('poster_id', user_id);
-        formData.append('caption', caption);
-        formData.append('edit', true)
+        formData.append('edit', true);
+
+        for (let i = 0; i < images.length; i++) {
+            formData.append('imageInputs[]', images[i]);
+        }
 
         $.ajax({
             url: '../backend/php/post.php',
@@ -51,15 +48,24 @@ $(document).ready(function(){
             processData: false,
             contentType: false,
             success: function(response) {
-                console.log(response)
+                console.log(response); // Log server response to console
                 window.location.href = "feeds.html";
             },
             error: function(xhr, status, error) {
-                // Handle the error
-                console.error(error);
+                console.error(error); // Log and handle the error
+                // Add error handling logic as needed (e.g., show error message to user)
             }
         });
     });
+
+    // Function to extract postId from URL
+    function getPostIdFromURL() {
+        var urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('id');
+    }
+    
+    
+    
 
     $(document).on('click', '.openComment', function(e){
         e.preventDefault();

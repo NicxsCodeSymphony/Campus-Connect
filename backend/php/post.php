@@ -42,15 +42,85 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $post_id = $_POST['post_id'];
         $caption = $_POST['caption'];
 
-        $query = "UPDATE post SET caption='$caption' WHERE post_id='$post_id'";
-        $res = mysqli_query($conn, $query);
-        if ($res) {
-            send_json_response(["success" => true, "message" => "Post caption was updated"]);
-        } else {
+        // Update post caption
+        $query = "UPDATE post SET caption=? WHERE post_id=?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param('si', $caption, $post_id);
+        $stmt->execute();
+
+        if (!$stmt->affected_rows) {
             send_json_response(["success" => false, "message" => "Post caption was not updated"]);
+            exit;
+        }
+
+        // Handle image uploads and updates
+        if (!empty(array_filter($_FILES['imageInputs']['name']))) {
+            // Delete previous images
+            $query = "DELETE FROM photos WHERE post_id=?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param('i', $post_id);
+            $stmt->execute();
+
+            // Upload new images
+            $target_dir = "assets/post/";
+            $files = $_FILES["imageInputs"];
+            $file_count = count($files['name']);
+
+            try {
+                for ($i = 0; $i < $file_count; $i++) {
+                    if ($files["error"][$i] == UPLOAD_ERR_OK) {
+                        $target_file = $target_dir . basename($files["name"][$i]);
+                        $uploadOk = 1;
+                        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+                        $check = getimagesize($files["tmp_name"][$i]);
+                        if ($check === false) {
+                            throw new Exception("File is not an image.");
+                        }
+
+                        if ($files["size"][$i] > 100000000) { // Adjust size limit as per your requirement
+                            throw new Exception("Sorry, your file is too large.");
+                        }
+
+                        // Allow certain file formats
+                        $allowed_extensions = array('jpg', 'jpeg', 'png', 'gif');
+                        if (!in_array($imageFileType, $allowed_extensions)) {
+                            throw new Exception("Sorry, only JPG, JPEG, PNG & GIF files are allowed.");
+                        }
+
+                        if (move_uploaded_file($files["tmp_name"][$i], $target_file)) {
+                            $image = $target_file;
+
+                            // Insert image into photos table
+                            $query = "INSERT INTO photos (post_id, image) VALUES (?, ?)";
+                            $stmt = $conn->prepare($query);
+                            $stmt->bind_param("is", $post_id, $image);
+                            $stmt->execute();
+
+                            if ($stmt->affected_rows === 0) {
+                                throw new Exception("Image insertion failed.");
+                            }
+                        } else {
+                            throw new Exception("Sorry, there was an error uploading your file.");
+                        }
+                    }
+                }
+
+                // Commit transaction
+                mysqli_commit($conn);
+                send_json_response(["success" => true, "message" => "Post caption and images were updated"]);
+
+            } catch (Exception $e) {
+                // Rollback transaction
+                mysqli_rollback($conn);
+                send_json_response(["success" => false, "message" => $e->getMessage()]);
+            }
+        } else {
+            // No image update needed
+            send_json_response(["success" => true, "message" => "Post caption was updated"]);
         }
     }
-}
+}   
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $userId = $_SESSION['user_id'];
