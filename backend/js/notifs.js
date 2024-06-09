@@ -33,7 +33,6 @@ $(document).ready(function() {
                                 } else {
                                     $notifs.find('.notif-text').text('sent you a friend request ' + (diffDay === 1 ? '1 day ago' : diffDay + ' days ago'));
                                 }
-                                $notifs.find('.see').hide();
                                 $notifs.find('.accept').show();
                                 $notifs.find('.ignore').show();
                             } else {

@@ -24,7 +24,7 @@ if ($stmt === false) {
     exit();
 }
 
-$stmt->bind_param("ii", $id, $id); // Bind the user ID parameter twice
+$stmt->bind_param("ii", $id, $id);
 
 $stmt->execute();
 

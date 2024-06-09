@@ -179,6 +179,41 @@ i{
     color: var(--darked);
 }
 
+/* feeds.css */
+
+/* Full-screen image preview modal */
+.image-preview-modal {
+    position: fixed;
+    top: 25px;
+    left: 0;
+    width: 22%;
+    height: 95%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: none; /* Initially hidden */
+    justify-content: center;
+    align-items: center;
+    overflow: auto; 
+    border-radius: 20px;
+}
+
+.image-preview-modal.show {
+    display: flex; /* Show modal when .show class is added */
+}
+
+.image-preview-modal .modal-content {
+    max-width: 100%; /* Maximum width of the modal content */
+    max-height: 100%; /* Maximum height of the modal content */
+    overflow: hidden; /* Hide overflow beyond max-width and max-height */
+}
+
+.image-preview-modal img {
+    max-width: 100%; /* Ensure image fits within modal */
+    max-height: 100%; /* Ensure image fits within modal */
+    object-fit: contain; /* Maintain image aspect ratio */
+    cursor: pointer; /* Change cursor to indicate image can be closed */
+}
+
+
 @media only screen and (max-width: 1366px){
     .interaction{
         width: 35%;
