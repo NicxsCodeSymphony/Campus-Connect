@@ -5,10 +5,16 @@ $id = $_SESSION['user_id'];
 include 'connection.php';
 
 $query = "
-    SELECT n.*, a.name, a.profile_photo as friend_image
+    SELECT n.*, a.name, a.profile_photo AS friend_image
     FROM notification n
     JOIN accounts a ON n.user_id = a.id 
-    WHERE n.user_id != ? 
+    WHERE n.user_id != ?    
+    AND EXISTS (
+        SELECT 1
+        FROM post p
+        WHERE p.post_id = n.post_id
+        AND p.poster_id = ?
+    )
 ";
 
 $stmt = $conn->prepare($query);
@@ -18,7 +24,7 @@ if ($stmt === false) {
     exit();
 }
 
-$stmt->bind_param("i", $id); 
+$stmt->bind_param("ii", $id, $id); // Bind the user ID parameter twice
 
 $stmt->execute();
 

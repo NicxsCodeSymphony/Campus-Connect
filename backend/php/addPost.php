@@ -1,5 +1,9 @@
 <?php
 
+session_start();
+
+$logged_id = $_SESSION['user_id'];
+
 include "connection.php";
 
 if (isset($_POST['post'])) {
@@ -51,8 +55,8 @@ if (isset($_POST['post'])) {
                         $image = $target_file;
 
                         // Insert image into photo table
-                        $stmt = $conn->prepare("INSERT INTO photos (post_id, image) VALUES (?, ?)");
-                        $stmt->bind_param("ss", $post_id, $image);
+                        $stmt = $conn->prepare("INSERT INTO photos (post_id, poster_id, image) VALUES (?, ?, ?)");
+                        $stmt->bind_param("sss", $post_id, $logged_id, $image);
 
                         if ($stmt->execute() !== TRUE) {
                             throw new Exception("Image insertion failed.");
