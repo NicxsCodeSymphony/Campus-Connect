@@ -1,6 +1,12 @@
 $(document).ready(function() {
     let currentUserId = null;
 
+    if(currentUserId == null){
+        console.log("logged in")
+    }else{
+        window.location.href = "index.html"
+    }
+
     // Check session and load content if user is logged in
     $.ajax({
         url: '../backend/php/session.php',
