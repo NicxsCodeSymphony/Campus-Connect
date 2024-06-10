@@ -221,6 +221,13 @@ i{
     cursor: pointer; /* Change cursor to indicate image can be closed */
 }
 
+.like-counter{
+    position: relative;
+    bottom: 15px;
+    left: 20px;
+    font-size: 12px;
+}
+
 
 @media only screen and (max-width: 1366px){
     .interaction{
@@ -234,4 +241,9 @@ i{
     .post-content{
         margin-bottom: 78px;
     }
+
+    .image-preview-modal{
+        width: 25%;
+    }
 }
+
