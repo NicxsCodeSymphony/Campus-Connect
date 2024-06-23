@@ -1,6 +1,12 @@
 $(document).ready(function() {
     let currentUserId = null;
 
+    if(currentUserId == null){
+        console.log("logged in")
+    }else{
+        window.location.href = "index.html"
+    }
+
     // Check session and load content if user is logged in
     $.ajax({
         url: '../backend/php/session.php',
@@ -65,6 +71,7 @@ $(document).ready(function() {
                 success: function(data) {
                     data.forEach(function(post) {
                         var $post = $(postTemplate); // Use the post template
+                        console.log(post)
 
                         $post.find('.editPost').attr('data-post-id', post.post_data.post_id);
                         $post.find('.post-id').val(post.post_data.post_id);
@@ -73,6 +80,7 @@ $(document).ready(function() {
                         $post.find('#userImage').attr('src', "../backend/php/" + post.post_data.profile_photo);
                         $post.find('.caption').text(post.post_data.caption);
                         $post.find('.poster-avatar').attr('src', post.post_data.poster_avatar);
+                        $post.find('like-counter').text(post.post_data.like_count)
 
                         var imagesContainer = $post.find('.img');
                         
@@ -109,6 +117,15 @@ $(document).ready(function() {
                                 success: function(response) {
                                     if (response.status === 'success') {
                                         $heart.toggleClass('liked');
+
+                                        // Update like count
+                                        var $likeCounter = $heart.closest('.interaction').find('.like-counter');
+                                        var currentLikes = parseInt($likeCounter.text());
+                                        if ($heart.hasClass('liked')) {
+                                            $likeCounter.text(currentLikes + 1);
+                                        } else {
+                                            $likeCounter.text(currentLikes - 1);
+                                        }
                                     } else {
                                         console.log(response.message);
                                     }
@@ -119,6 +136,9 @@ $(document).ready(function() {
                                 }
                             });
                         });
+
+                        // Populate like count
+                        $post.find('.like-counter').text(post.like_count);
 
                         $('.post-container').append($post);
                     });

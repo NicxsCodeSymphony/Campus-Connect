@@ -162,6 +162,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             }
         }
 
+        // Fetch like counts
+        $query = "SELECT post_id, COUNT(*) AS like_count FROM like_couter GROUP BY post_id";
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        $likeCounts = array();
+        while ($row = mysqli_fetch_assoc($res)) {
+            $likeCounts[$row['post_id']] = $row['like_count'];
+        }
+
+        // Merge like counts with posts data
+        foreach ($posts as &$post) {
+            $postId = $post['post_data']['post_id'];
+            $post['like_count'] = isset($likeCounts[$postId]) ? $likeCounts[$postId] : 0;
+        }
+
         send_json_response(array_values($posts));
     }
 
@@ -196,6 +213,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         if (!empty($row['image'])) {
             $posts[$row['post_id']]['images'][] = $row['image'];
         }
+    }
+
+    // Fetch like counts
+    $query = "SELECT post_id, COUNT(*) AS like_count FROM like_couter GROUP BY post_id";
+    $stmt = $conn->prepare($query);
+    $stmt->execute();
+    $res = $stmt->get_result();
+
+    $likeCounts = array();
+    while ($row = mysqli_fetch_assoc($res)) {
+        $likeCounts[$row['post_id']] = $row['like_count'];
+    }
+
+    // Merge like counts with posts data
+    foreach ($posts as &$post) {
+        $postId = $post['post_data']['post_id'];
+        $post['like_count'] = isset($likeCounts[$postId]) ? $likeCounts[$postId] : 0;
     }
 
     send_json_response(array_values($posts));
