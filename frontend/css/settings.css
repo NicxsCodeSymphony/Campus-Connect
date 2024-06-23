@@ -181,3 +181,7 @@ i:hover{
     text-decoration: none;
     cursor: pointer;
 }
+
+textarea{
+    color: #fff;
+}

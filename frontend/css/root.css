@@ -18,7 +18,7 @@ body{
 }
 
 .screen{
-    /* margin: 0 auto; */
+    margin: 0 auto;
     color: var(--textColor);
     border: 1px #fff solid;
     border-radius: 20px;
@@ -36,5 +36,13 @@ input{
 @media only screen and (max-width: 1366px){
     .screen{
         width: 25%;
+    }
+}
+
+
+@media only screen and (max-width: 400px){
+    .screen{
+        width: 100%;
+        border: none;
     }
 }

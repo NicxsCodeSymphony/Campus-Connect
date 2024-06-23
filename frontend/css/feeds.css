@@ -235,3 +235,9 @@ i{
         margin-bottom: 78px;
     }
 }
+
+@media only screen and (max-width: 400px){
+    .image-preview-modal{
+        width: 100%;
+    }
+}
